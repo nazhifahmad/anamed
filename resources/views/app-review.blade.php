@@ -33,33 +33,37 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a></li>
-                <li><a href="/app-review">App Review</a></li>
+                <li><a href="#">HOME <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="/app-review">App Review</a></li>
                 <li><a href="#">Survey</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
         </nav>
         <div class="container">
-            <div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h1 class="gallery-title">Gallery</h1>
-            </div>
-            @if ($response)
-            <?php $counter = 0; ?>
-                @foreach(array_chunk($response['summary'], 3) as $chunk)
-                    <div class="row" style="text-align: center; margin-top: 5%">
-                        @foreach($chunk as $add)
-                            <?php $counter++; ?>
-                            <div class="col-md-4">
-                                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ 'demo'.$counter }}">Summary {{ $add['id'] }}</button>
-                                <div id="{{ 'demo'.$counter }}" class="collapse">
-                                    {{ $add['summary'] }}
+            <div class="jumbotron">
+                <h1 class="gallery-title" style="text-align: center;">App Review</h1>
+                @if ($response)
+                <?php $counter = 0; ?>
+                    @foreach(array_chunk($response, 3) as $chunk)
+                        <div class="row" style="text-align: center; margin-top: 5%">
+                            @foreach($chunk as $add)
+                                <?php $counter++; ?>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ 'demo'.$counter }}">Summary {{ $add['id'] }}</button>
+                                    <div id="{{ 'demo'.$counter }}" class="collapse">
+                                        <h3><b>Summary 1</b></h3>
+                                        <p>{{ $add['summary1'] }}</p>
+                                        <h3><b>Summary 2</b></h3>
+                                        <p>{{ $add['summary2'] }}</p>      
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
-            @endif
+                            @endforeach
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+            
         </div>
     </body>
 </html>

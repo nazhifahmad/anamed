@@ -6,6 +6,34 @@ use PhpScience\TextRank\TextRankFacade;
 use PhpScience\TextRank\Tool\StopWords\English;
 class SummaryController extends Controller
 {
+    public function viewSummary() {
+        $response1 = $this->summary();
+        $response2 = $this->summary2();
+        $response = array();
+
+
+        $ii = sizeof($response1);
+        for ($i=0; $i < $ii; $i++) { 
+            $isi1 = $response1[$i]["summary"];
+            $response[] = array("id"=>$response1[$i]["id"], "summary1"=>$isi1);
+        }
+        $ii = sizeof($response2);
+        for ($i=0; $i < $ii; $i++) { 
+            $isi2 = $response2[$i]["summary"];
+            $id=$response2[$i]["id"];
+            $jj = sizeof($response);
+            for ($j=0; $j < $jj; $j++) {
+                if ($id == $response[$j]["id"]) {
+                    $response[$j]["summary2"] = $isi2;
+                    $j = $jj;   
+                }
+            }
+        }
+        $response = json_encode($response);
+        return view('app-review', ['response' => json_decode($response, true)]);
+        // return $response;
+    }
+
     public function viewSummary1() {
         $response = $this->summary();
         $response = json_encode($response);
@@ -29,8 +57,7 @@ class SummaryController extends Controller
             $result = $st->get_summary($isi_text);
             $final[] = array ("id"=>$text->id_aplikasi, "summary"=> $result);
         }
-        $response['summary'] = $final;
-        return ($response);
+        return ($final);
     }
 
     public function summary() {
@@ -66,7 +93,6 @@ class SummaryController extends Controller
             $final[] = array ("id"=>$text->id_aplikasi, "summary"=> $temp);
             // $final[] = array ("id"=>$text->id_aplikasi, "summary"=> $result);
         }
-        $response['summary'] = $final;
-        return $response;
+        return $final;
     }
 }
