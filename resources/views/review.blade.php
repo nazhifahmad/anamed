@@ -27,7 +27,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">App Review Summarization</a>
+              <a class="navbar-brand" href="/">App Review Summarization</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -38,23 +38,35 @@
         </nav>
         <div class="container">
             <div class="jumbotron">
-                <h1 style="text-align: center;">Application Review Summarization</h1>
-                @if ($response)
-                <?php $counter = 0; ?>
-                    @foreach(array_chunk($response, 4) as $chunk)
-                        <div class="row" style="text-align: center; margin-top: 5%">
-                            @foreach($chunk as $add)
-                                <?php $counter++; ?>
-                                <div class="col-md-3">
-                                    <img src="{{ $add['image'] }}" style="width: auto; max-width: 150px">
-                                    <br>
-                                    <h4>{{ $add['id_aplikasi'] }}</h4>
-                                    <a class="btn btn-primary" href="{{'review/'.$add['id_aplikasi']}}">Lihat Review Aplikasi</a>
+                <h2>Review {{ $app }}</h2>
+                <img style="max-width: 300px" src="{{$pict[0]['image']}}">
+                <div class="row">    
+                    <div class="col-md-8">
+                        <div class="page-header">
+                            <h3><small class="pull-right"><?php echo(sizeof($response) . ' reviews'); ?></small> Reviews </h3>
+                            <a href="/summary/{{$app}}" class="btn btn-info">Lihat Summary</a>
+                        </div>
+                        <div class="comments-list">
+                            @foreach($response as $add)
+                                <div class="media">
+                                    <a class="media-left" href="#">
+                                        <img src="http://lorempixel.com/40/40/people/1/">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading user_name"><b>
+                                        @if ($add['username'])
+                                            {{$add['username']}}
+                                        @else
+                                            {{"Anonim"}}
+                                        @endif
+                                        </b></h4>
+                                        {{$add['text_review']}}
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
-                    @endforeach
-                @endif
+                    </div>
+                </div>
             </div>
         </div>
     </body>

@@ -6,6 +6,51 @@ use PhpScience\TextRank\TextRankFacade;
 use PhpScience\TextRank\Tool\StopWords\English;
 class SummaryController extends Controller
 {
+    public function home()
+    {
+        $elements = DB::select('select id_aplikasi, image from reviews_concat_cleansing');
+
+        $elements = json_encode($elements);
+        return view('home', ['response' => json_decode($elements, true)]);
+    }
+
+    public function getReview($id) {
+        $pict = DB::select('select image from reviews_concat_cleansing WHERE id_aplikasi = \'' . $id . '\'');
+        $elements = DB::select('select username, title, text_review from reviews WHERE id_aplikasi = \'' . $id . '\'');
+        $elements = json_encode($elements);
+        $pict = json_encode($pict);
+        return view('review', ['response' => json_decode($elements, true), 'app' => $id, 'pict' => json_decode($pict, true)]);
+    }
+
+    public function getSummary($id) {
+        $response1 = $this->summary($id);
+        $response2 = $this->summary2($id);
+        $response = array();
+        $pict = DB::select('select image from reviews_concat_cleansing WHERE id_aplikasi = \'' . $id . '\'');
+        $pict = json_encode($pict);
+
+        $ii = sizeof($response1);
+        for ($i=0; $i < $ii; $i++) { 
+            $isi1 = $response1[$i]["summary"];
+            $response[] = array("id"=>$response1[$i]["id"], "summary1"=>$isi1);
+        }
+        $ii = sizeof($response2);
+        for ($i=0; $i < $ii; $i++) { 
+            $isi2 = $response2[$i]["summary"];
+            $id=$response2[$i]["id"];
+            $jj = sizeof($response);
+            for ($j=0; $j < $jj; $j++) {
+                if ($id == $response[$j]["id"]) {
+                    $response[$j]["summary2"] = $isi2;
+                    $j = $jj;   
+                }
+            }
+        }
+        $response = json_encode($response);
+        // return $response;
+        return view('summary', ['response' => json_decode($response, true), 'pict' => json_decode($pict, true)]);
+    }
+
     public function viewSummary() {
         $response1 = $this->summary();
         $response2 = $this->summary2();
@@ -46,8 +91,13 @@ class SummaryController extends Controller
         return view('home', ['response' => json_decode($response, true)]);
     }
 
-    public function summary2() {
-        $texts = DB::select('select * from reviews_concat_cleansing');
+    public function summary2($id = null) {
+        if ($id != null) {
+            $texts = DB::select('select * from reviews_concat_cleansing WHERE id_aplikasi = \'' . $id . '\'');            
+        } else {
+            $texts = DB::select('select * from reviews_concat_cleansing');            
+        }
+
         $response = array();
         $final = array();
         $temp = array();
@@ -60,9 +110,13 @@ class SummaryController extends Controller
         return ($final);
     }
 
-    public function summary() {
+    public function summary($id = null) {
         // The semicolon, befittingly, symbolizes a wink.';
-        $texts = DB::select('select * from reviews_concat_cleansing');
+        if ($id != null) {
+            $texts = DB::select('select * from reviews_concat_cleansing WHERE id_aplikasi = \'' . $id . '\'');            
+        } else {
+            $texts = DB::select('select * from reviews_concat_cleansing');            
+        }
 
         $response = array();
         $final = array();

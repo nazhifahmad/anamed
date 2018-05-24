@@ -27,7 +27,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">App Review Summarization</a>
+              <a class="navbar-brand" href="/">App Review Summarization</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -38,23 +38,14 @@
         </nav>
         <div class="container">
             <div class="jumbotron">
-                <h1 style="text-align: center;">Application Review Summarization</h1>
-                @if ($response)
-                <?php $counter = 0; ?>
-                    @foreach(array_chunk($response, 4) as $chunk)
-                        <div class="row" style="text-align: center; margin-top: 5%">
-                            @foreach($chunk as $add)
-                                <?php $counter++; ?>
-                                <div class="col-md-3">
-                                    <img src="{{ $add['image'] }}" style="width: auto; max-width: 150px">
-                                    <br>
-                                    <h4>{{ $add['id_aplikasi'] }}</h4>
-                                    <a class="btn btn-primary" href="{{'review/'.$add['id_aplikasi']}}">Lihat Review Aplikasi</a>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
-                @endif
+                <div style="text-align: center;">
+                    <h2>Summary of {{ $response[0]['id'] }} Review</h2>
+                    <img style="max-width: 300px" src="{{$pict[0]['image']}}">
+                </div>
+                <h3>Summary 1</h3>
+                <p>{{$response[0]['summary1']}}</p>
+                <h3>Summary 2</h3>
+                <p>{{$response[0]['summary2']}}</p>
             </div>
         </div>
     </body>

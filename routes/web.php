@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'SummaryController@home');
+Route::get('/review/{id}', 'SummaryController@getReview');
+Route::get('/summary/{id}', 'SummaryController@getSummary');
 Route::get('/app-review', 'SummaryController@viewSummary');
 Route::get('/summary', 'SummaryController@viewSummary1');
 Route::get('/summary2', 'SummaryController@viewSummary2');

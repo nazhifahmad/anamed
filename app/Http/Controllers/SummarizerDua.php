@@ -28,6 +28,7 @@ class SummarizerDua extends Controller{
 	 * @return array snatences
 	 */
 	public function split_content_to_sentences($content) {
+		$content = trim(preg_replace('/\s+/', ' ', $content));
 		$content = preg_split('/[?!]/', $content, NULL ,PREG_SPLIT_DELIM_CAPTURE );
 		$content = implode("", $content);
 		// return $content;
