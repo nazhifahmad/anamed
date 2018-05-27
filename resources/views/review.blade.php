@@ -13,6 +13,22 @@
             $('.collapse').collapse();
         </script>
         
+		 <script src="//code.jquery.com/jquery.js"></script>
+        <!-- DataTables -->
+        
+        <!-- Bootstrap JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+		<script src="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  
+		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+		
+		<script type="text/javascript">
+           $(document).ready( function () {
+				$('#table_id').DataTable();
+			} );
+        </script>
 
         <title></title>
     </head>
@@ -47,24 +63,32 @@
                             <a href="/summary/{{$app}}" class="btn btn-info">Lihat Summary</a>
                         </div>
                         <div class="comments-list">
-                            @foreach($response as $add)
-                                <div class="media">
-                                    <a class="media-left" href="#">
-                                        <img src="http://lorempixel.com/40/40/people/1/">
-                                    </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading user_name"><b>
-                                        @if ($add['username'])
+							<table id="table_id" class="display">
+							<thead>
+								<tr>
+									<th>Nama</th>
+									<th>Review</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($response as $add)
+								<tr>
+										<td>
+										 @if ($add['username'])
                                             {{$add['username']}}
-                                        @else
+										 @else
                                             {{"Anonim"}}
                                         @endif
-                                        </b></h4>
-                                        {{$add['text_review']}}
-                                    </div>
-                                </div>
-                            @endforeach
+										</td>
+									<td>{{$add['text_review']}}</td>
+								</tr>
+								 @endforeach
+							</tbody>
+								
+                                
+							</table>
                         </div>
+						
                     </div>
                 </div>
             </div>
